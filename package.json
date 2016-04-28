@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "DEBUG=nodepop:* NODE_PATH=lib NODE_ENV=production nodemon ./bin/www",
     "installDB": "NODE_PATH=lib node ./scripts/install_db.js"
   },
   "dependencies": {

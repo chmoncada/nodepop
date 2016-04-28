@@ -21,23 +21,60 @@ router.get('/',function (req,res, next) {
         console.log('Anuncio ' + anuncioCreado.nombre + ' creado');
     });*/
 
+    // Create variables for each filter we get from call
     var nombre = req.query.nombre;
     var tag = req.query.tag;
+    // Boolean variable from a String
+    if (typeof req.query.venta !== 'undefined') { // To avoid to pass toLowerCase method to an 'undefined'
+        if (req.query.venta.toLowerCase() === 'true' || req.query.venta.toLowerCase() === 'false') {
+            var venta = ( req.query.venta.toLowerCase() === 'true');
+        }
+    }
+
+    // We process the 'precio' string to make the conditions of search
+    var min = null;
+    var max = null;
+    if(typeof req.query.precio != 'undefined') {
+        var range = req.query.precio.split('-');
+        console.log(range);
+        if (range.length === 1) {
+            if(range[0] !== '') {
+              //price = parseInt(range[0]);
+                var precio = range[0];
+                console.log(precio);
+            }
+        }
+    }
+
     var start = parseInt(req.query.start) || 0;
     var limit = parseInt(req.query.limit) || null;
     var sort = req.query.sort || null;
 
-    //creamos una variable para meter todos los filtros de busqueda
+    // Define a variable to put all searching filters
     var criteria = {};
 
-    //vemos si el filtro fue ingresado y se lo asignamos a la variable sino no hacemos nada
+    // Check if the filter 'name' was written and if it exists putting inside 'criteria' object
     if (typeof nombre !== 'undefined'){
-        criteria.nombre = nombre;
-    }
-    if (typeof tag !== 'undefined'){
-        criteria.tags = tag;
+        // Put a regular expression for matching text with a pattern in the beginning of the field 'nombre'
+        criteria.nombre = new RegExp('^'+ nombre,'i');
     }
 
+    // Check if the filter 'tag' was written and if it exists putting inside 'criteria' object
+    if (typeof tag !== 'undefined'){
+        criteria.tags = tag; // el texto menciona que solo puedo tener 4 valores, falta implementar eso
+    }
+
+    // Check if the filter 'venta' was written and if it exists putting inside 'criteria' object
+    if (typeof venta !== 'undefined'){
+        criteria.venta = venta;
+    }
+
+    // Check if the filter 'price' was written and if it exists putting inside 'criteria' object
+    if (typeof precio !== 'undefined'){
+        criteria.precio = precio;
+    }
+
+    // Call the static method of model 'Anuncio'
     Anuncio.list(criteria, start, limit, sort, function (err, rows) {
         if(err){
             return res.json({success: false, error: err});
