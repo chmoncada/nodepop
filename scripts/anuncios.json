@@ -1,0 +1,41 @@
+{
+  "anuncios": [
+    {
+      "nombre": "Bicicleta",
+      "venta": true,
+      "precio": 230.15,
+      "foto": "bici.jpg",
+      "tags": [
+        "lifestyle",
+        "pedales"
+      ]
+    },
+    {
+      "nombre": "iPhone 3GS",
+      "venta": false,
+      "precio": 50.00,
+      "foto": "iphone.png",
+      "tags": [
+        "lifestyle",
+        "mobile"
+      ]
+    },
+    {
+      "nombre": "Subaru Forester",
+      "venta": true,
+      "precio": 2000.00,
+      "foto": "forester.jpg",
+      "tags": [
+        "lifestyle",
+        "motor"
+      ]
+    }
+  ],
+
+  "usuarios":
+  {
+    "nombre": "admin",
+    "email": "admin@me.com",
+    "clave": "1234"
+  }
+}

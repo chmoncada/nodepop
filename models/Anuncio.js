@@ -12,6 +12,14 @@ var anuncioSchema = mongoose.Schema({
     tags: [String]
 });
 
+anuncioSchema.statics.list = function (filter, start, limit, sort, cb) {
+    console.log('filter',filter);
+    var query = Anuncio.find(filter);
+    query.skip(start);
+    query.limit(limit);
+    query.sort(sort);
+    return query.exec(cb);
+};
 
-// Assign the schema to model
-mongoose.model('Anuncio', anuncioSchema);
+// lo asignamos al modelo
+var Anuncio = mongoose.model('Anuncio', anuncioSchema);
