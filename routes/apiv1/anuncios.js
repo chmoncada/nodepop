@@ -22,6 +22,7 @@ router.get('/',function (req,res, next) {
     });*/
 
     // Create variables for each filter we get from call
+    console.log(req.query);
     var nombre = req.query.nombre;
     var tag = req.query.tag;
     // Boolean variable from a String
@@ -32,19 +33,42 @@ router.get('/',function (req,res, next) {
     }
 
     // We process the 'precio' string to make the conditions of search
-    var min = null;
-    var max = null;
     if(typeof req.query.precio != 'undefined') {
         var range = req.query.precio.split('-');
         console.log(range);
-        if (range.length === 1) {
-            if(range[0] !== '') {
-              //price = parseInt(range[0]);
+        if (range.length === 1) {//si han ingresado un valor en el filtro precio
+            if(range[0] !== '' && !isNaN(range[0]) ) { //Check if the value is not empty or not number
                 var precio = range[0];
                 console.log(precio);
+            } else {
+                console.log('You should enter a number'); // ignore the filter
+            }
+        } else if (range.length === 2) {
+            if ( !isNaN(range[0]) && !isNaN(range[1]) ) { // Only evaluate if both values are numbers
+                if (parseInt(range[0]) >= parseInt(range[1])) {
+                    console.log('The first number should not be equal or greater than the second number')
+                } else {
+                    let max = null;
+                    let min = null;
+                    if(isNaN(parseInt(range[0]))){
+                        max = parseInt(range[1]);
+                        var precio = {$lt: max};
+                    } else if(isNaN(parseInt(range[1]))){
+                        min = parseInt(range[0]);
+                        var precio = {$gt: min};
+                    } else {
+                        min = parseInt(range[0]);
+                        max = parseInt(range[1]);
+                        var precio = {$gt: min, $lt: max};
+                    }
+                    console.log(min, max);
+                    console.log('OK');
+                }
+            } else {
+                console.log('You cannot enter a text'); // if some value is text, we will ignore the filter
             }
         }
-    }
+    };
 
     var start = parseInt(req.query.start) || 0;
     var limit = parseInt(req.query.limit) || null;
