@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "DEBUG=nodepop:* NODE_PATH=lib NODE_ENV=production nodemon ./bin/www",
-    "installDB": "NODE_PATH=lib node ./scripts/install_db.js"
+    "installDB": "NODE_PATH=lib node ./scripts/install_db.js",
+    "jshint": "jshint --exclude ./node_modules . || true",
+    "jscs": "jscs . || true"
   },
   "dependencies": {
     "async": "^2.0.0-rc.3",
@@ -13,6 +15,8 @@
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
+    "jscs": "^3.0.3",
+    "jshint": "^2.9.2",
     "jsonwebtoken": "^6.1.1",
     "mongoose": "^4.4.13",
     "morgan": "~1.6.1",

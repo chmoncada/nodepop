@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var mongoose = require('mongoose');
 var db = mongoose.connection;
@@ -84,15 +84,15 @@ async.series([
 
             // Saving usuario inicial
             var usuarioInicial = new Usuario(anunciosJson.usuarios);
-            var sha1 = crypto.createHash('sha256').update(usuarioInicial.clave).digest("hex"); // We create clave hash
+            var sha1 = crypto.createHash('sha256').update(usuarioInicial.clave).digest('hex'); // We create clave hash
             usuarioInicial.clave = sha1;
-            console.log('Saving usuario: ' + anunciosJson.usuarios.nombre, ' ...')
+            console.log('Saving usuario: ' + anunciosJson.usuarios.nombre, ' ...');
             usuarioInicial.save(function (err,usuarioCreado) {
                 if (error) {
                     console.log('Usuario not saved: ', anunciosJson.usuarios.nombre);
                     process.exit();//mejorarlo con pasar el error al callback de async.series
                 }
-                console.log('OK');
+                console.log('OK', usuarioCreado);
                 callback( null, true);
              });
 

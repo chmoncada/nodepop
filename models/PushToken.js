@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var mongoose = require('mongoose');
 
@@ -6,9 +6,14 @@ var mongoose = require('mongoose');
 
 var pushTokenSchema = mongoose.Schema({
     plataforma: {
-        type: String, enum: ['ios', 'android']
+        type: String,
+        enum: ['ios', 'android'],
+        required: true
     },
-    token: String,
+    token: {
+        type: String,
+        required: true
+    },
     usuario: String
 });
 

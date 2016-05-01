@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
 
 // Import model Anuncio
-var Anuncio = mongoose.model('Anuncio');
+let Anuncio = mongoose.model('Anuncio');
 
 // Import jsonwebtoken auth
-var jwtAuth = require('../../lib/jwtAuth');
+let jwtAuth = require('../../lib/jwtAuth');
 
 router.use(jwtAuth()); // We need to check if the call has the right token
 
@@ -19,20 +19,23 @@ router.get('/',function (req,res, next) {
 
     let nombre = req.query.nombre;
     let tag = req.query.tag;
+    let venta;
     // Boolean variable from a String
     if (typeof req.query.venta !== 'undefined') { // To avoid to pass toLowerCase method to an 'undefined'
         if (req.query.venta.toLowerCase() === 'true' || req.query.venta.toLowerCase() === 'false') {
-            var venta = ( req.query.venta.toLowerCase() === 'true');
+            venta = ( req.query.venta.toLowerCase() === 'true');
         }
     }
 
     // We process the 'precio' string to make the conditions of search
+    var precio; // Use var instead of let to use it inside the nested ifs and avoid errors
     if(typeof req.query.precio != 'undefined') {
         var range = req.query.precio.split('-');
         console.log(range);
+        //var precio;
         if (range.length === 1) { // Check if it is enter a single value in the filter
             if(range[0] !== '' && !isNaN(range[0]) ) { // Check if the value is not empty or not number
-                var precio = range[0];
+                precio = range[0];
             } else {
                return res.status(401).json({ success: false, error: 'You should enter a number'});
             }
@@ -46,14 +49,14 @@ router.get('/',function (req,res, next) {
                     let min = null;
                     if(isNaN(parseInt(range[0]))){
                         max = parseInt(range[1]);
-                        var precio = {$lt: max};
+                        precio = {$lt: max};
                     } else if(isNaN(parseInt(range[1]))){
                         min = parseInt(range[0]);
-                        var precio = {$gt: min};
+                        precio = {$gt: min};
                     } else {
                         min = parseInt(range[0]);
                         max = parseInt(range[1]);
-                        var precio = {$gt: min, $lt: max};
+                        precio = {$gt: min, $lt: max};
                     }
                     //console.log(min, max);
                     //console.log('OK');
@@ -65,7 +68,7 @@ router.get('/',function (req,res, next) {
         } else {
             return res.status(401).json({ success: false, error: 'Too many arguments for the filter'});
         }
-    };
+    }
 
     // Pagination options
     var start = parseInt(req.query.start) || 0;

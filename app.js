@@ -1,9 +1,14 @@
+'use strict';
+
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+// Unused node module
+//var favicon = require('serve-favicon');
+
 
 var routes = require('./routes/index');
 
@@ -15,7 +20,10 @@ require('./lib/connectMongoose');
 
 //Loading the models
 require('./models/Anuncio');
+
 require('./models/Usuario');
+
+require('./models/PushToken');
 
 
 // view engine setup
@@ -37,6 +45,7 @@ app.use('/', routes);
 app.use('/apiv1/anuncios', require('./routes/apiv1/anuncios'));
 app.use('/usuarios', require('./routes/usuarios'));
 app.use('/apiv1/tags', require('./routes/apiv1/tags'));
+app.use('/pushtokens', require('./routes/apiv1/pushTokens'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

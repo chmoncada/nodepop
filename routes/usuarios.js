@@ -1,13 +1,14 @@
-"use strict";
+'use strict';
 
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
+var mongoose = require('mongoose');
 var config = require('../local_config');
 
 var express = require('express');
 var router = express.Router();
 
-var Usuario = require('mongoose').model('Usuario');
+var Usuario = mongoose.model('Usuario');
 
 // Authenticate usuario
 router.post('/authenticate', function (req, res) {
@@ -66,7 +67,7 @@ router.post('/register', function (req, res) {
             });
         }
     });
-})
+});
 
 
 module.exports = router;
