@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 var fs = require('fs');
 var async = require('async');
+var crypto = require('crypto');
 
 db.on('error', console.log.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -83,6 +84,8 @@ async.series([
 
             // Saving usuario inicial
             var usuarioInicial = new Usuario(anunciosJson.usuarios);
+            var sha1 = crypto.createHash('sha256').update(usuarioInicial.clave).digest("hex"); // We create clave hash
+            usuarioInicial.clave = sha1;
             console.log('Saving usuario: ' + anunciosJson.usuarios.nombre, ' ...')
             usuarioInicial.save(function (err,usuarioCreado) {
                 if (error) {
