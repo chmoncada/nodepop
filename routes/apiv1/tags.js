@@ -10,14 +10,15 @@ let jwtAuth = require('../../lib/jwtAuth');
 
 router.use(jwtAuth()); // We need to check if the call has the right token
 
-// Show existing tags, calling a statis method of the model Anuncio
-router.get('/', function(req, res) {
+// Show existing tags, calling a static method of the model Anuncio
+router.get('/', function(req, res, next) {
 
     Anuncio.listTags(function(err, list) {
 
         if (err) {
-            return ; // IMPLEMENTAR ERROR HANDLER
+            return next(err);
         }
+
         res.json({sucess:true, tags: list});
     });
 });

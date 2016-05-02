@@ -13,7 +13,6 @@ db.once('open', function() {
 
 mongoose.connect('mongodb://localhost:27017/nodepop');
 
-
 require('../models/Anuncio');
 require('../models/Usuario');
 
@@ -26,10 +25,11 @@ async.series([
 
     // Cleaning Anuncios collection and populate with JSON file
     function(callback) {
-        Anuncio.remove({}, function (error) {
+        Anuncio.remove({}, function(error) {
             if (error) {
                 callback(error, null);
             }
+
             console.log('Anuncios collection cleaned');
 
             var anuncioGrabar = {};
@@ -39,10 +39,10 @@ async.series([
             function saving(n, cb) {
                 anuncioGrabar = new Anuncio(anunciosJson.anuncios[n]);
                 console.log('Saving anuncio: ', anunciosJson.anuncios[n].nombre, ' ...');
-                anuncioGrabar.save(function (error) {
+                anuncioGrabar.save(function(error) {
                     if (error) {
                         console.log('Anuncio not saved: ', anunciosJson.anuncios[n].nombre);
-                        process.exit();//mejorarlo con pasar el error al callback de async.series
+                        process.exit();
                     } else {
                         console.log('OK');
                         cb();
@@ -54,32 +54,35 @@ async.series([
             // Definition of loop recursive function to avoid that the callback returns
             // before all anuncios finished to save in the DB
             function loop(n, fn, callbackFinal) {
-                if (n ===0){
+                if (n === 0) {
                     callbackFinal();
                     return;
                 }
+
                 n--;
-                fn(n, function () {
+                fn(n, function() {
                     loop(n, fn, callbackFinal);
                 });
             }
 
             // make the call of the recursive function to pass the callback to the next function
             // in the async.series function
-            loop(anunciosJson.anuncios.length, saving, function () {
+            loop(anunciosJson.anuncios.length, saving, function() {
                 callback(null, true);
             });
 
         });
 
     },
+
     // Delete usuarios collection
     function(callback) {
 
         Usuario.remove({}, function(error) {
-            if(error){
+            if (error) {
                 callback(error, null);
             }
+
             console.log('Usuarios collection cleaned');
 
             // Saving usuario inicial
@@ -87,32 +90,26 @@ async.series([
             var sha1 = crypto.createHash('sha256').update(usuarioInicial.clave).digest('hex'); // We create clave hash
             usuarioInicial.clave = sha1;
             console.log('Saving usuario: ' + anunciosJson.usuarios.nombre, ' ...');
-            usuarioInicial.save(function (err,usuarioCreado) {
+            usuarioInicial.save(function(error) {
                 if (error) {
                     console.log('Usuario not saved: ', anunciosJson.usuarios.nombre);
-                    process.exit();//mejorarlo con pasar el error al callback de async.series
+                    process.exit();
                 }
-                console.log('OK', usuarioCreado);
-                callback( null, true);
-             });
+
+                console.log('OK');
+                callback(null, true);
+            });
 
         });
-    },
-
-
-
-], function (error, result) {
-    if (error) {
-        console.error('Hubo un error: ', error);
-        return process.exit(1);
     }
-    console.log('Init script ready!! Bye!!');
-    return process.exit(0);
-});
+            ], function(error) {
+                if (error) {
+                    console.error('Error: ', error);
+                    return process.exit(1);
+                }
 
+                console.log('Init script ready!! Bye!!');
+                console.log('To start the API, please enter: \nnpm start ');
 
-
-
-
-
-
+                return process.exit(0);
+            });

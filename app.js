@@ -9,9 +9,7 @@ var bodyParser = require('body-parser');
 // Unused node module
 //var favicon = require('serve-favicon');
 
-
 var routes = require('./routes/index');
-
 
 var app = express();
 
