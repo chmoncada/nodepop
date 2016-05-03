@@ -10,12 +10,25 @@ let Anuncio = mongoose.model('Anuncio');
 // Import jsonwebtoken auth
 let jwtAuth = require('../../lib/jwtAuth');
 
+// Import error translator module
+let errorTranslator = require('../../lib/errorTranslator');
+
 router.use(jwtAuth()); // We need to check if the call has the right token
 
-router.get('/',function (req,res, next) {
+router.get('/',function (req,res) {
 
     // PENDING: MOVE ALL LOGIC TO A MODEL STATIC FUNCTION!!!!
      // Create variables for each filter we get from call
+
+    // filter of language
+    let lang = req.query.lang;
+    let langError;
+    if (lang === 'es') {
+        langError = lang;
+    } else {
+        langError = 'en';
+    }
+    let errorText;
 
     let nombre = req.query.nombre;
     let tag = req.query.tag;
@@ -32,18 +45,18 @@ router.get('/',function (req,res, next) {
     if(typeof req.query.precio != 'undefined') {
         var range = req.query.precio.split('-');
         console.log(range);
-        //var precio;
         if (range.length === 1) { // Check if it is enter a single value in the filter
             if(range[0] !== '' && !isNaN(range[0]) ) { // Check if the value is not empty or not number
                 precio = range[0];
             } else {
-               return res.status(401).json({ success: false, error: 'You should enter a number'});
+                errorText = errorTranslator('ENTER_NUMBER', langError);
+                return res.status(401).json({ success: false, error: errorText});
             }
         } else if (range.length === 2) {
             if ( !isNaN(range[0]) && !isNaN(range[1]) ) { // Only evaluate if both values are numbers
                 if (parseInt(range[0]) >= parseInt(range[1])) {
-                    console.log('The first number should not be equal or greater than the second number');
-                    return res.status(401).json({ success: false, error: 'The first number should not be equal or greater than the second number'});
+                    errorText = errorTranslator('FIRST_NUMBER_SHOULD_BE_SMALLER_THAN_SECOND', langError);
+                    return res.status(401).json({ success: false, error: errorText});
                 } else { // Built the precio filter
                     let max = null;
                     let min = null;
@@ -58,15 +71,14 @@ router.get('/',function (req,res, next) {
                         max = parseInt(range[1]);
                         precio = {$gt: min, $lt: max};
                     }
-                    //console.log(min, max);
-                    //console.log('OK');
                 }
             } else {
-                console.log('You cannot enter a text'); // if some value is text, we will ignore the filter
-                return res.status(401).json({ success: false, error: 'You should enter numbers'});
+                errorText = errorTranslator('ENTER_NUMBER', langError);
+                return res.status(401).json({ success: false, error: errorText});
             }
         } else {
-            return res.status(401).json({ success: false, error: 'Too many arguments for the filter'});
+            errorText = errorTranslator('TOO_MANY_ARGUMENTS', langError);
+            return res.status(401).json({ success: false, error: errorText});
         }
     }
 
@@ -108,6 +120,13 @@ router.get('/',function (req,res, next) {
     });
     
 
+});
+
+router.get('*', function(req, res, next) {
+    //return res.json({success: false, error: 'HOLA'});
+    var err = new Error();
+    err.status = 404;
+    next(err);
 });
 
 module.exports = router;

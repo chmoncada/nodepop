@@ -6,12 +6,21 @@ let mongoose = require('mongoose');
 
 let PushToken = mongoose.model('PushToken');
 
-//Modulo de error
-//var errorHandler = require ('../../utils/Error.js').error;
+// Import error translator module
+let errorTranslator = require('../../lib/errorTranslator');
 
 // Save push token for Android or iOS
 router.post ('/', function (req,res){
 
+    let lang = req.query.lang;
+    let langError;
+    if (lang === 'es') {
+        langError = lang;
+    } else {
+        langError = 'en';
+    }
+    let errorText;
+    
     // Get info from body
     let plataforma = req.body.plataforma;
     let token = req.body.token;
@@ -23,12 +32,11 @@ router.post ('/', function (req,res){
         usuario: usuario
     });
 
-    console.log('Saving token: ' + newToken.token, ' ...');
+    console.log('Saving token: ...');
     newToken.save(function (error,tokenCreado) {
         if (error) {
-            console.log(error);
-            console.log('Token not saved: ', newToken.token);
-            return res.status(500).json({ success: false, error: error});//mejorarlo con pasar el error al callback de async.series return errorHandler(err,res);
+            errorText = errorTranslator('TOKEN_NOT SAVED', langError);            
+            return res.status(500).json({ success: false, msg: errorText, error: error});
         }
         console.log('OK');
         res.status(200).json({success: true, newToken: tokenCreado });
