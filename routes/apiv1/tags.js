@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
             return next(err);
         }
 
-        res.json({sucess:true, tags: list});
+        res.json({sucess: true, tags: list});
     });
 });
 

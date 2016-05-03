@@ -13,8 +13,8 @@ var anuncioSchema = mongoose.Schema({
     tags: [String]
 });
 
-anuncioSchema.statics.list = function (filter, start, limit, sort, cb) {
-    console.log('filter',filter);
+anuncioSchema.statics.list = function(filter, start, limit, sort, cb) {
+    console.log('filter', filter);
     var query = Anuncio.find(filter);
     query.skip(start);
     query.limit(limit);
@@ -22,25 +22,29 @@ anuncioSchema.statics.list = function (filter, start, limit, sort, cb) {
     return query.exec(cb);
 };
 
-anuncioSchema.statics.listTags = function(callback) { 
-    let tags=configTags.tags;
+anuncioSchema.statics.listTags = function(callback) {
+    let tags = configTags.tags;
     let tagExistente = [];
-    Anuncio.count({ tags: tags[0]}, function (err, result) {
-        if (result !== 0){
+    Anuncio.count({ tags: tags[0]}, function(err, result) {
+        if (result !== 0) {
             tagExistente.push(tags[0]);
         }
-        Anuncio.count({ tags: tags[1]}, function (err, result) {
-            if (result !== 0){
+
+        Anuncio.count({ tags: tags[1]}, function(err, result) {
+            if (result !== 0) {
                 tagExistente.push(tags[1]);
             }
-            Anuncio.count({ tags: tags[2]}, function (err, result) {
-                if (result !== 0){
+
+            Anuncio.count({ tags: tags[2]}, function(err, result) {
+                if (result !== 0) {
                     tagExistente.push(tags[2]);
                 }
-                Anuncio.count({ tags: tags[3]}, function (err, result) {
-                    if (result !== 0){
+
+                Anuncio.count({ tags: tags[3]}, function(err, result) {
+                    if (result !== 0) {
                         tagExistente.push(tags[3]);
                     }
+
                     return callback(err, tagExistente);
                 });
             });

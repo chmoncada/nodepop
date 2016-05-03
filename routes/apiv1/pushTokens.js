@@ -10,7 +10,7 @@ let PushToken = mongoose.model('PushToken');
 let errorTranslator = require('../../lib/errorTranslator');
 
 // Save push token for Android or iOS
-router.post ('/', function (req,res){
+router.post('/', function(req, res) {
 
     let lang = req.query.lang;
     let langError;
@@ -19,8 +19,9 @@ router.post ('/', function (req,res){
     } else {
         langError = 'en';
     }
+
     let errorText;
-    
+
     // Get info from body
     let plataforma = req.body.plataforma;
     let token = req.body.token;
@@ -33,14 +34,15 @@ router.post ('/', function (req,res){
     });
 
     console.log('Saving token: ...');
-    newToken.save(function (error,tokenCreado) {
+    newToken.save(function(error, tokenCreado) {
         if (error) {
-            errorText = errorTranslator('TOKEN_NOT SAVED', langError);            
+            errorText = errorTranslator('TOKEN_NOT SAVED', langError);
             return res.status(500).json({ success: false, msg: errorText, error: error});
         }
+
         console.log('OK');
         res.status(200).json({success: true, newToken: tokenCreado });
-    }); 
+    });
 });
 
 module.exports = router;

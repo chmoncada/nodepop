@@ -14,6 +14,5 @@ var usuarioSchema = mongoose.Schema({
     clave: String
 });
 
-
 // Assign the schema to model
 mongoose.model('Usuario', usuarioSchema);
