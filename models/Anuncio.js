@@ -19,6 +19,7 @@ anuncioSchema.statics.list = function(filter, start, limit, sort, cb) {
     query.skip(start);
     query.limit(limit);
     query.sort(sort);
+
     return query.exec(cb);
 };
 

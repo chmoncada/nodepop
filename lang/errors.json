@@ -34,5 +34,17 @@
   "NO_TOKEN": {
     "en" : "No Token provided",
     "es" : "No se recibio el Token"
+  },
+  "EXISTING_TOKEN": {
+    "en" : "Token exist!",
+    "es" : "Token ya existe"
+  },
+  "USE_AUTH_ROUTE": {
+    "en" : "Use auth route",
+    "es" : "Use route con autentificacion"
+  },
+  "TOKEN_IS_NOT_FROM_USER": {
+    "en" : "Token does not belong to the user",
+    "es" : "El token no pertenece al usuario"
   }
 }

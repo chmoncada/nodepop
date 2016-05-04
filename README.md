@@ -45,3 +45,11 @@ With that, you are able to run the **API** , writing in your bash:
  The default listening port is *http://localhost:3000*
  
 ## API V1
+
+
+
+
+
+MISSING
+
+includeTotal filter

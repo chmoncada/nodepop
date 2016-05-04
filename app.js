@@ -42,6 +42,7 @@ app.use('/apiv1/anuncios', require('./routes/apiv1/anuncios'));
 app.use('/usuarios', require('./routes/usuarios'));
 app.use('/apiv1/tags', require('./routes/apiv1/tags'));
 app.use('/pushtokens', require('./routes/apiv1/pushTokens'));
+app.use('/pushtokens/auth', require('./routes/apiv1/pushTokensAuth'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
