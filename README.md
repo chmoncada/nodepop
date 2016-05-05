@@ -66,8 +66,15 @@ Register a new user
 | clave	      	| String	        	| (required) user's password |
 | nombre		 	| String	        	| user's name                |
 
+**Optional Params**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+|lang				| String				| Change the language of error messages. "es" for Spanish, "en" for English(default)| 
+
 **Example:**
 
+Body Values:
 
 | Parameter		| Value				| 
 |:------------ 	|:---------------:	| 
@@ -94,14 +101,14 @@ The "clave" field is saved encrypted for security reasons.
 
 
 
-####b)	Autentificacion
+####b)	User Authentication (POST)
 
 
-**Method**: `usuarios/register`
+**Method**: `usuarios/authenticate`
 
-Register a new user
+Authenticate user with email and password and get token to use in the requests
 
-**Request URL**: `http://localhost:3000/usuarios/register`
+**Request URL**: `http://localhost:3000/usuarios/authenticate`
 
 **Request Body *(x-www-form-urlencoded)*:**
 
@@ -109,53 +116,13 @@ Register a new user
 |:------------ 	|:---------------:	| :----------------------    |
 | email	      	| String			 	| (required) user's email    |
 | clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
 
-**Example:**
-
-
-| Parameter		| Value				| 
-|:------------ 	|:---------------:	| 
-| email	      	| user@example.com	| 
-| clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
-
-The "clave" field is saved encrypted for security reasons.
-
-**Response:**
-
-~~~json
-{
-  "success": true,
-  "newUser": {
-    "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
-  }
-}
-~~~
-
-
-###2.0 Metodos de Anuncios
-
-####a) Lista de anuncios y filtros
-
-
-**Method**: `usuarios/register`
-
-Register a new user
-
-**Request URL**: `http://localhost:3000/usuarios/register`
-
-**Request Body *(x-www-form-urlencoded)*:**
+**Optional Params**
 
 | Parameter		| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
-| email	      	| String			 	| (required) user's email    |
-| clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
+|lang				| String				| Change the language of error messages. "es" for Spanish, "en" for English(default)| 
+
 
 **Example:**
 
@@ -164,75 +131,160 @@ Register a new user
 |:------------ 	|:---------------:	| 
 | email	      	| user@example.com	| 
 | clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
 
-The "clave" field is saved encrypted for security reasons.
+
+The response return a token to be attached to the API requests that needed
 
 **Response:**
 
 ~~~json
 {
   "success": true,
-  "newUser": {
-    "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
-  }
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3MmE5ZGFmMjU4OWQxOGMxMjkyNzAxZSIsImlhdCI6MTQ2MjQxNjk1MCwiZXhwIjoxNDYyNTg5NzUwfQ.dNf_Ia0V-SJD9reZdea5YeyGRuOXDYIGLz48IGnvcaA"
 }
 ~~~
 
 
-- por tag
-	- por tipo
-	- por rango
-		*	exacto
-		* mayor que
-		* menor que
-		* rango
-	- nombre
+###2.0 Announce
+
+####a) Announces List (GET)
+
+
+**Method**: `apiv1/anuncios`
+
+List of announces (can be filtered).  Needs token given in authenticate request (1.b)
+
+**Request Params**
+
+| Parameter		| Type					| Description                          |
+|:------------ 	|:---------------:	| :----------------------              |
+| token	      	| String			 	| (required) token. See 1.b request    |
+
+**Request URL**: `http://localhost:3000/apiv1/anuncios?token=YOUR_TOKEN` 
+
+Return list of announces
+
+~~~json
+{
+  "success": true,
+  "rows": [
+    {
+      "_id": "5728dcdd11dd22e504a2a677",
+      "nombre": "Subaru Forester",
+      "venta": true,
+      "precio": 2000,
+      "foto": "forester.jpg",
+      "__v": 0,
+      "tags": [
+        "lifestyle",
+        "motor"
+      ]
+    },
+    {
+      "_id": "5728dcdd11dd22e504a2a678",
+      "nombre": "iPhone 3GS",
+      "venta": false,
+      "precio": 50,
+      "foto": "iphone.png",
+      "__v": 0,
+      "tags": [
+        "lifestyle",
+        "mobile"
+      ]
+    },
+ ]
+}
+~~~
+
+**Optional Params**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| tag		      	| String			 	| tag, value can be: lifestyle, work, motor, or mobile|
+| nombre	      	| String	        	| initial characters of announce name. e.g. ip to look all names that begins with "ip" |
+| precio		 	| String	        	| price value:  <ul><li>Can be exact value e.g. "50"</li><li>Can be a range value e.g. "10-50"</li><li>Can be "greater than" value e.g. "50-"</li><li>Can be "lesser than" value e.g. "-50"</li></ul>|
+|venta				| Boolean				| type of announce. true for sale ("venta") and false for search ("busqueda") |
+|start				| Number				| Query start skipping this value. e.g. if we want that the query start after the 4 value in the DB, we put "start=4"|
+|limit				| Number				| Query limit the number of announces shown |
+|sort				| String				| Can be sorted by first four params|
+|lang				| String				| Change the language of error messages. "es" for Spanish, "en" for English(default)| 
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| tag		      	| mobile				| 
+| nombre	      	| ip		        	| 
+| precio		 	| 49-		        	| 
+| venta		 	| false	        	|
+| start		 	| 0			        	|
+| limit		 	| 2			        	|
+| sort			 	| precio	        	|
+| lang			 	| es		        	|
+
+**Request URL**: 
+
+`http://localhost:3000/apiv1/anuncios?token=YOUR_TOKEN&tag=mobile&nombre=ip&precio=49-&venta=false&start=0&limit=2&sort=precio&lang=es` 
+
+The resuls is a JSON with the announces in an array called "rows"
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "rows": [
+    {
+      "_id": "5728dcdd11dd22e504a2a678",
+      "nombre": "iPhone 3GS",
+      "venta": false,
+      "precio": 50,
+      "foto": "iphone.png",
+      "__v": 0,
+      "tags": [
+        "lifestyle",
+        "mobile"
+      ]
+    }
+  ]
+}
+~~~
 	
 ####b)	Lista de tags existentes
 
 
-**Method**: `usuarios/register`
+**Method**: `apiv1/tags`
 
-Register a new user
+Show a list with existing tags in the DB
 
-**Request URL**: `http://localhost:3000/usuarios/register`
+**Request Params**
 
-**Request Body *(x-www-form-urlencoded)*:**
+| Parameter		| Type					| Description                          |
+|:------------ 	|:---------------:	| :----------------------              |
+| token	      	| String			 	| (required) token. See 1.b request    |
+
+
+**Optional Params**
 
 | Parameter		| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
-| email	      	| String			 	| (required) user's email    |
-| clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
+|lang				| String				| Change the language of error messages. "es" for Spanish, "en" for English(default)| 
 
-**Example:**
+**Request URL**: `http://localhost:3000/apiv1/tags?token=YOUR_TOKEN`
 
-
-| Parameter		| Value				| 
-|:------------ 	|:---------------:	| 
-| email	      	| user@example.com	| 
-| clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
-
-The "clave" field is saved encrypted for security reasons.
+The respond JSON shows an array with the existing tags
 
 **Response:**
 
 ~~~json
 {
-  "success": true,
-  "newUser": {
-    "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
-  }
+  "sucess": true,
+  "tags": [
+    "lifestyle",
+    "motor",
+    "mobile"
+  ]
 }
 ~~~
 
@@ -242,11 +294,11 @@ The "clave" field is saved encrypted for security reasons.
 ####a)	Guardado de token push
 
 
-**Method**: `usuarios/register`
+**Method**: `/pushtokens`
 
 Register a new user
 
-**Request URL**: `http://localhost:3000/usuarios/register`
+**Request URL**: `http://localhost:3000/pushtokens`
 
 **Request Body *(x-www-form-urlencoded)*:**
 
@@ -286,11 +338,11 @@ The "clave" field is saved encrypted for security reasons.
 ####b)	Guardado de token push (auth)
 
 
-**Method**: `usuarios/register`
+**Method**: `usuarios/pushtokens/auth`
 
 Register a new user
 
-**Request URL**: `http://localhost:3000/usuarios/register`
+**Request URL**: `http://localhost:3000/usuarios/pushtokens/auth`
 
 **Request Body *(x-www-form-urlencoded)*:**
 
@@ -325,59 +377,3 @@ The "clave" field is saved encrypted for security reasons.
   }
 }
 ~~~
-
-
-###4.0 Utilidades
-
-####a) Internacionalizacion de mensajes de error
-
-
-**Method**: `usuarios/register`
-
-Register a new user
-
-**Request URL**: `http://localhost:3000/usuarios/register`
-
-**Request Body *(x-www-form-urlencoded)*:**
-
-| Parameter		| Type					| Description                |
-|:------------ 	|:---------------:	| :----------------------    |
-| email	      	| String			 	| (required) user's email    |
-| clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
-
-**Example:**
-
-
-| Parameter		| Value				| 
-|:------------ 	|:---------------:	| 
-| email	      	| user@example.com	| 
-| clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
-
-The "clave" field is saved encrypted for security reasons.
-
-**Response:**
-
-~~~json
-{
-  "success": true,
-  "newUser": {
-    "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
-  }
-}
-~~~
-
-		
-
-
-
-
-
-MISSING
-
-includeTotal filter
