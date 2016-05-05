@@ -11,7 +11,10 @@ var usuarioSchema = mongoose.Schema({
         required: true,
         index: true
     },
-    clave: String
+    clave: {
+        type: String,
+        required: true
+    }
 });
 
 // Assign the schema to model

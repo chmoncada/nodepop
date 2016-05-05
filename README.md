@@ -30,9 +30,9 @@ I suppose you clone my gitHub project and install all the modules needed to run 
 
 After you have the app in your machine, you need to setup some things before running.
 
-There is a file inside the *scripts* Folder called anuncios.json.  Inside it appear a first set of *announces* and an initial *user* to test the **API**.  Please change it if you want, preserving the structure and fields.
+There is a file inside the *scripts* Folder called anuncios.json.  Inside it appear a first set of *announces* and an initial *user* `admin@me.com` and password `1234` to test the **API**.  Please change it if you want, preserving the structure and fields.
 
-After you finished with the *JSON* file, please run the *Inicialization script*, entering in the terminal (please don´t forget to have MongoDB running): 
+After you finished with the *JSON* file, run the *Inicialization script*, entering in the terminal (please don´t forget to have MongoDB running): 
 
  ```Bash
  $ npm run installDB
@@ -45,6 +45,334 @@ With that, you are able to run the **API** , writing in your bash:
  The default listening port is *http://localhost:3000*
  
 ## API V1
+
+This API returns JSON object for the requests the user make. The possible petitions are:
+
+###1.0 User
+
+####a)	User Register (POST)
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+
+####b)	Autentificacion
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+###2.0 Metodos de Anuncios
+
+####a) Lista de anuncios y filtros
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+- por tag
+	- por tipo
+	- por rango
+		*	exacto
+		* mayor que
+		* menor que
+		* rango
+	- nombre
+	
+####b)	Lista de tags existentes
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+###3.0 Metodos de Token
+
+####a)	Guardado de token push
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+####b)	Guardado de token push (auth)
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+
+###4.0 Utilidades
+
+####a) Internacionalizacion de mensajes de error
+
+
+**Method**: `usuarios/register`
+
+Register a new user
+
+**Request URL**: `http://localhost:3000/usuarios/register`
+
+**Request Body *(x-www-form-urlencoded)*:**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+| email	      	| String			 	| (required) user's email    |
+| clave	      	| String	        	| (required) user's password |
+| nombre		 	| String	        	| user's name                |
+
+**Example:**
+
+
+| Parameter		| Value				| 
+|:------------ 	|:---------------:	| 
+| email	      	| user@example.com	| 
+| clave	      	| password        	| 
+| nombre		 	| usuario	        	| 
+
+The "clave" field is saved encrypted for security reasons.
+
+**Response:**
+
+~~~json
+{
+  "success": true,
+  "newUser": {
+    "__v": 0,
+    "nombre": "usuario",
+    "email": "user@example.com",
+    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "_id": "572a9daf2589d18c1292701e"
+  }
+}
+~~~
+
+		
 
 
 
