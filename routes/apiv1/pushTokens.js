@@ -25,7 +25,7 @@ router.post('/', function(req, res, next) {
 
     // Get info from body
     let plataforma = req.body.plataforma;
-    let token = req.body.token;
+    let token = req.body.pushtoken;
     let usuario = req.body.usuario;
 
     // Check if the user exists in the Usuario DB

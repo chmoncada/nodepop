@@ -60,7 +60,7 @@ Register a new user
 
 **Request Body *(x-www-form-urlencoded)*:**
 
-| Parameter		| Type					| Description                |
+| Key				| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
 | email	      	| String			 	| (required) user's email    |
 | clave	      	| String	        	| (required) user's password |
@@ -112,7 +112,7 @@ Authenticate user with email and password and get token to use in the requests
 
 **Request Body *(x-www-form-urlencoded)*:**
 
-| Parameter		| Type					| Description                |
+| Key				| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
 | email	      	| String			 	| (required) user's email    |
 | clave	      	| String	        	| (required) user's password |
@@ -251,7 +251,7 @@ The resuls is a JSON with the announces in an array called "rows"
 }
 ~~~
 	
-####b)	Lista de tags existentes
+####b)	Existing tags list (GET)
 
 
 **Method**: `apiv1/tags`
@@ -273,7 +273,7 @@ Show a list with existing tags in the DB
 
 **Request URL**: `http://localhost:3000/apiv1/tags?token=YOUR_TOKEN`
 
-The respond JSON shows an array with the existing tags
+The respond JSON shows an array with the existing tags in the announces DB
 
 **Response:**
 
@@ -289,14 +289,14 @@ The respond JSON shows an array with the existing tags
 ~~~
 
 
-###3.0 Metodos de Token
+###3.0 Push Token
 
-####a)	Guardado de token push
+####a)	Saving Push Token
 
 
 **Method**: `/pushtokens`
 
-Register a new user
+Save a token for notifications.  It can have a user email but can be empoty if you don´t want to share your email.  If you enter an existing email, it will return an error because you need to use the auth request instead (3.b).  
 
 **Request URL**: `http://localhost:3000/pushtokens`
 
@@ -304,76 +304,89 @@ Register a new user
 
 | Parameter		| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
-| email	      	| String			 	| (required) user's email    |
-| clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
+| plataforma	 	| String			 	| (required) ios or android  |
+| usuario	      	| String	        	| (optional) user's email    |
+| pushtoken	 	| String	        	| push token                 |
 
 **Example:**
 
-
 | Parameter		| Value				| 
 |:------------ 	|:---------------:	| 
-| email	      	| user@example.com	| 
-| clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
+| plataforma    	| ios					| 
+| usuario	      	| (empty)        	| 
+| nombre		 	| MY_TOKEN        	| 
 
-The "clave" field is saved encrypted for security reasons.
+
 
 **Response:**
 
 ~~~json
 {
   "success": true,
-  "newUser": {
+  "newToken": {
     "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
+    "plataforma": "ios",
+    "token": "MY_TOKEN",
+    "usuario": "",
+    "_id": "572bee1ec0a4556309cdf8b1"
   }
 }
 ~~~
 
 
-####b)	Guardado de token push (auth)
+####b)	Saving Push Token (auth)
 
 
-**Method**: `usuarios/pushtokens/auth`
+**Method**: `/pushtokens/auth`
 
-Register a new user
+Save a token for notifications for an existing user.  Be sure to use the user`s token. If a token exists, the new token overwrite it.
 
-**Request URL**: `http://localhost:3000/usuarios/pushtokens/auth`
+**Request URL**: `http://localhost:3000/pushtokens`
+
+**Request Params**
+
+| Parameter		| Type					| Description                          |
+|:------------ 	|:---------------:	| :----------------------              |
+| token	      	| String			 	| (required) token. See 1.b request    |
 
 **Request Body *(x-www-form-urlencoded)*:**
 
 | Parameter		| Type					| Description                |
 |:------------ 	|:---------------:	| :----------------------    |
-| email	      	| String			 	| (required) user's email    |
-| clave	      	| String	        	| (required) user's password |
-| nombre		 	| String	        	| user's name                |
+| plataforma	 	| String			 	| (required) ios or android  |
+| usuario	      	| String	        	| (optional) user's email    |
+| pushtoken	 	| String	        	| push token                 |
+
+**Optional Params**
+
+| Parameter		| Type					| Description                |
+|:------------ 	|:---------------:	| :----------------------    |
+|lang				| String				| Change the language of error messages. "es" for Spanish, "en" for English(default)| 
+
+
+**Request URL**: `http://localhost:3000/pushtokens?token=YOUR_TOKEN`
 
 **Example:**
 
 
 | Parameter		| Value				| 
 |:------------ 	|:---------------:	| 
-| email	      	| user@example.com	| 
-| clave	      	| password        	| 
-| nombre		 	| usuario	        	| 
+| plataforma    	| ios					| 
+| usuario	      	| (empty)        	| 
+| nombre		 	| MY_TOKEN        	| 
 
-The "clave" field is saved encrypted for security reasons.
 
 **Response:**
 
 ~~~json
 {
   "success": true,
-  "newUser": {
+  "newToken": {
     "__v": 0,
-    "nombre": "usuario",
-    "email": "user@example.com",
-    "clave": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-    "_id": "572a9daf2589d18c1292701e"
+    "plataforma": "ios",
+    "token": "MY_TOKEN_2",
+    "usuario": "user@example.com",
+    "_id": "572befc82c41ca6109c6c04d"
   }
 }
 ~~~
