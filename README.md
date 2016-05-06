@@ -191,7 +191,7 @@ Return list of announces
         "lifestyle",
         "mobile"
       ]
-    },
+    }
  ]
 }
 ~~~
@@ -372,8 +372,8 @@ Save a token for notifications for an existing user.  Be sure to use the user`s 
 | Parameter		| Value				| 
 |:------------ 	|:---------------:	| 
 | plataforma    	| ios					| 
-| usuario	      	| (empty)        	| 
-| nombre		 	| MY_TOKEN        	| 
+| usuario	      	| user@example.com 	|
+| pushtoken		| MY_TOKEN_2       	|
 
 
 **Response:**
