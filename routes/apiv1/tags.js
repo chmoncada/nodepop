@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
 
-var Anuncio = mongoose.model('Anuncio');
+let Anuncio = mongoose.model('Anuncio');
 
 let jwtAuth = require('../../lib/jwtAuth');
 

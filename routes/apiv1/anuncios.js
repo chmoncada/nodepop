@@ -85,12 +85,12 @@ router.get('/', function(req, res) {
     }
 
     // Pagination options
-    var start = parseInt(req.query.start) || 0;
-    var limit = parseInt(req.query.limit) || null;
-    var sort = req.query.sort || null;
+    let start = parseInt(req.query.start) || 0;
+    let limit = parseInt(req.query.limit) || null;
+    let sort = req.query.sort || null;
 
     // Define a variable to put all searching filters
-    var criteria = {};
+    let criteria = {};
 
     // Check if the filter 'name' was written and if it exists putting inside 'criteria' object
     if (typeof nombre !== 'undefined') {
@@ -123,9 +123,8 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('*', function(req, res, next) {
-    //return res.json({success: false, error: 'HOLA'});
-    var err = new Error();
+router.get('*', function(req, res, next) { // to capture routers not created
+    let err = new Error();
     err.status = 404;
     next(err);
 });

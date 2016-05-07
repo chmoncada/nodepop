@@ -1,10 +1,10 @@
 'use strict';
 
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
 // Schema for the anuncios
 
-var pushTokenSchema = mongoose.Schema({
+let pushTokenSchema = mongoose.Schema({
     plataforma: {
         type: String,
         enum: ['ios', 'android'],

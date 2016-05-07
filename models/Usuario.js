@@ -1,10 +1,10 @@
 'use strict';
 
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
 // Schema for the anuncios
 
-var usuarioSchema = mongoose.Schema({
+let usuarioSchema = mongoose.Schema({
     nombre: String,
     email: {
         type: String,

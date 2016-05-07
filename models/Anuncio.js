@@ -1,11 +1,11 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var configTags = require('../local_config').tags;
+let mongoose = require('mongoose');
+let configTags = require('../local_config').tags;
 
 // Schema for the anuncios
 
-var anuncioSchema = mongoose.Schema({
+let anuncioSchema = mongoose.Schema({
     nombre: String,
     venta: Boolean,
     precio: Number,
@@ -15,7 +15,7 @@ var anuncioSchema = mongoose.Schema({
 
 anuncioSchema.statics.list = function(filter, start, limit, sort, cb) {
     console.log('filter', filter);
-    var query = Anuncio.find(filter);
+    let query = Anuncio.find(filter);
     query.skip(start);
     query.limit(limit);
     query.sort(sort);

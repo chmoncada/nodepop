@@ -1,20 +1,20 @@
 'use strict';
 
-var jwt = require('jsonwebtoken');
-var crypto = require('crypto');
-var mongoose = require('mongoose');
-var config = require('../local_config');
+let jwt = require('jsonwebtoken');
+let crypto = require('crypto');
+let mongoose = require('mongoose');
+let config = require('../local_config');
 let errorTranslator = require('../lib/errorTranslator.js');
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-var Usuario = mongoose.model('Usuario');
+let Usuario = mongoose.model('Usuario');
 
 // Authenticate usuario
 router.post('/authenticate', function(req, res) {
-    var user = req.body.email;
-    var pass = crypto.createHash('sha256').update(req.body.clave).digest('hex');
+    let user = req.body.email;
+    let pass = crypto.createHash('sha256').update(req.body.clave).digest('hex');
     let lang = req.query.lang;
 
     let langError;
@@ -41,7 +41,7 @@ router.post('/authenticate', function(req, res) {
             return res.status(401).json({ success: false, error: errorText});
         }
 
-        var token = jwt.sign({ id: user._id}, config.jwt.secret, {
+        let token = jwt.sign({ id: user._id}, config.jwt.secret, {
             expiresIn: '2 days'
         });
         res.json({success: true, token: token});
